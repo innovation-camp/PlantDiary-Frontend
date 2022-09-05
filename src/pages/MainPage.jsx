@@ -3,12 +3,12 @@ import styled from "styled-components";
 import HeaderContainer from "../components/Header/HeaderContainer";
 
 const MainPage = (props) => (
-  <AppContainer>
+  <MainContainer>
     <HeaderContainer />
-  </AppContainer>
+  </MainContainer>
 );
 
-const AppContainer = styled.div`
+const MainContainer = styled.div`
   height: 100vh;
 `;
 
