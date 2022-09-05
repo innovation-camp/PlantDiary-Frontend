@@ -53,7 +53,7 @@ const JoinForm = (props) => {
       } catch (error) {
         console.log(error);
       }
-      // TODO: 회원가입 성공시 로그인 페이지로 이동
+      // TODO:
     } else {
       alert("회원가입 안돼!");
     }

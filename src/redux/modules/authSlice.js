@@ -19,7 +19,7 @@ export const logIn = createAsyncThunk("LOGIN", async (loginInfo) => {
 // store 에서 가져올 수 있지 않나..? 저장해놨다면?
 export const mypage = createAsyncThunk("MYPAGE", async () => {
   // const res = await instance.get(`/api/auth/mypage`);
-  const res = await instance.get(`/user`);
+  const res = await instance.get(`/user`); // 임시 🐥
   return res.data;
 });
 
@@ -50,10 +50,19 @@ export const nicknameConfirm = createAsyncThunk(
   }
 );
 
+// TODO: post 전체조회. 나중에 postSlice 로 이동
+export const getPosts = createAsyncThunk("GET_POSTS", async () => {
+  // const res = await instance.get(`/api/posts`);
+  const res = await instance.get(`/posts`); // 임시 🐥
+  console.log("res posts > ", res.data[0]);
+  return res.data[0];
+});
+
 const authSlice = createSlice({
   name: "auth",
   initialState: {
     user: [],
+    posts: [],
   },
   reducers: {},
   extraReducers: (builder) => {
@@ -62,6 +71,10 @@ const authSlice = createSlice({
     });
     builder.addCase(mypage.fulfilled, (state, action) => {
       state.user = [...action.payload];
+    });
+    builder.addCase(getPosts.fulfilled, (state, action) => {
+      // console.log("payload > ", action.payload.data);
+      state.posts = [...action.payload.data];
     });
   },
 });
