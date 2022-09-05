@@ -1,61 +1,67 @@
 import React, { useCallback, useEffect, useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import styled from "styled-components";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
 import loginImg from "../../imgs/login_img.png";
-import { useDispatch } from "react-redux";
 import {
-  signUp,
-  emailConfirm,
+  mypage,
   nicknameConfirm,
+  changeUserInfo,
 } from "../../redux/modules/authSlice";
 
-const JoinForm = (props) => {
-  const REGEX_EMAIL =
-    /^[-A-Za-z0-9_]+[-A-Za-z0-9_.]*[@]{1}[-A-Za-z0-9_]+[-A-Za-z0-9_.]*[.]{1}[A-Za-z]{1,5}$/;
+const MypageForm = () => {
   const REGEX_NICKNAME = /[ㄱ-ㅎ|가-힣]+$/;
   const REGEX_PASSWORD = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
 
   const [email, setEmail] = useState("");
   const [nickname, setNickname] = useState("");
-  const [password, setPassword] = useState("");
-  const [passwordConfirm, setPasswordConfirm] = useState("");
-  const [signup, setSignup] = useState(false);
 
-  const [isEmail, setIsEmail] = useState(false);
+  const [newNickname, setNewNickname] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [passwordConfirm, setPasswordConfirm] = useState("");
+  const [save, setSave] = useState(false);
+
   const [isNickname, setIsNickname] = useState(false);
   const [isPassword, setIsPassword] = useState(false);
 
-  const [availableEmail, setAvailableEmail] = useState("");
   const [availableNickname, setAvailableNickname] = useState("");
 
   const dispatch = useDispatch();
-  //TODO: 이메일, 닉네임 중복 확인 버튼 추가
-  const handleSubmit = (event) => {
+
+  // TODO: 로그인시 store 에 유저 정보를 넣어줬다면, 굳이 api 요청을 안해도 되나?
+  useEffect(() => {
+    dispatch(mypage());
+  }, []);
+
+  const user = useSelector((store) => store.auth.user)[0];
+
+  useEffect(() => {
+    if (user) {
+      const { email, nickname } = user;
+      setEmail(email);
+      setNickname(nickname);
+    }
+  }, [user]);
+
+  const onSave = (event) => {
     event.preventDefault();
     const pwd_check = password_check();
     if (pwd_check !== true) {
       return;
     }
-    if (email !== availableEmail) {
-      alert("이메일 중복체크를 해주세요.");
-      return;
-    }
-    if (nickname !== availableNickname) {
+    if (newNickname !== availableNickname) {
       alert("닉네임 중복체크를 해주세요.");
       return;
     }
-    if (signup) {
-      alert("회원가입 가능!");
-      try {
-        dispatch(signUp({ email, nickname, password }));
-      } catch (error) {
-        console.log(error);
-      }
-      // TODO: 회원가입 성공시 로그인 페이지로 이동
+    if (save) {
+      alert("회원정보 변경 가능!");
+      dispatch(
+        changeUserInfo({ email, nickname: newNickname, password: newPassword })
+      );
     } else {
-      alert("회원가입 안돼!");
+      alert("회원정보 변경 안됨!");
     }
   };
 
@@ -64,12 +70,10 @@ const JoinForm = (props) => {
       target: { name, value },
     } = event;
     switch (name) {
-      case "email":
-        return setEmail(value);
-      case "nickname":
-        return setNickname(value);
-      case "password":
-        return setPassword(value);
+      case "newNickname":
+        return setNewNickname(value);
+      case "newPassword":
+        return setNewPassword(value);
       case "passwordConfirm":
         return setPasswordConfirm(value);
       default:
@@ -81,70 +85,49 @@ const JoinForm = (props) => {
     return text ? helperText : false;
   };
 
-  const validation_email = useCallback(() => {
-    return validation(email, REGEX_EMAIL);
-  }, [email, REGEX_EMAIL]);
-
   const validation_nickname = useCallback(() => {
-    return validation(nickname, REGEX_NICKNAME);
-  }, [nickname, REGEX_NICKNAME]);
+    return validation(newNickname, REGEX_NICKNAME);
+  }, [newNickname, REGEX_NICKNAME]);
 
   const validation_password = useCallback(() => {
-    return validation(password, REGEX_PASSWORD);
-  }, [password, REGEX_PASSWORD]);
+    return validation(newPassword, REGEX_PASSWORD);
+  }, [newPassword, REGEX_PASSWORD]);
 
   useEffect(() => {
-    email && validation_email() === false
-      ? setIsEmail(true)
-      : setIsEmail(false);
-  }, [email, validation_email]);
-
-  useEffect(() => {
-    nickname && validation_nickname() === false
+    newNickname && validation_nickname() === false
       ? setIsNickname(true)
       : setIsNickname(false);
-  }, [nickname, validation_nickname]);
+  }, [newNickname, validation_nickname]);
 
   useEffect(() => {
-    password && validation_password() === false
+    newPassword && validation_password() === false
       ? setIsPassword(true)
       : setIsPassword(false);
-  }, [password, validation_password]);
+  }, [newPassword, validation_password]);
 
   useEffect(() => {
-    if (isEmail && isNickname && isPassword) {
-      setSignup(true);
+    if (isNickname && isPassword) {
+      setSave(true);
     } else {
-      setSignup(false);
+      setSave(false);
     }
-  }, [isEmail, isNickname, isPassword]);
-
-  const emailCheck = async () => {
-    // 값 받아와서 true 면? available email 에 현재 email 넣기
-    const result = await dispatch(emailConfirm(email));
-    // if (result) {
-    if (result.payload) {
-      alert("사용 가능한 이메일입니다.");
-      setAvailableEmail(email);
-    } else {
-      alert("다른 이메일을 사용하세요.");
-    }
-  };
+  }, [isNickname, isPassword]);
 
   const nicknameCheck = async () => {
     // 값 받아와서 true 면? available nickname 에 현재 nickname 넣기
-    const result = await dispatch(nicknameConfirm(nickname));
+    const result = await dispatch(nicknameConfirm(newNickname));
     console.log(result);
     if (result.payload) {
+      // if (true) {
       alert("사용 가능한 닉네임입니다.");
-      setAvailableNickname(nickname);
+      setAvailableNickname(newNickname);
     } else {
       alert("사용할 수 없는 닉네임입니다.");
     }
   };
 
   const password_check = () => {
-    if (password === passwordConfirm) {
+    if (newPassword === passwordConfirm) {
       return true;
     } else {
       alert("비밀번호가 일치하지 않습니다.");
@@ -159,32 +142,16 @@ const JoinForm = (props) => {
         <Box>
           <LoginImg src={loginImg} alt="login"></LoginImg>
         </Box>
-        <Box component="form" onSubmit={handleSubmit} sx={{ ml: 2 }}>
+        <Box component="form" onSubmit={onSave} sx={{ ml: 2 }}>
+          🌱 안녕하세요 {nickname} 님!
+          <TextField fullWidth margin="normal" disabled value={email} />
           <TextField
             margin="normal"
             required
-            value={email}
-            label="Email Address"
-            name="email"
-            autoFocus
-            onChange={onChange}
-            error={validation_email()}
-            helperText={validation_email() ? "이메일 형식이 아닙니다." : ""}
-          />
-          <Button
-            variant="outlined"
-            disabled={isEmail ? false : true}
-            sx={{ mt: 3, ml: 0.9 }}
-            onClick={emailCheck}
-          >
-            중복확인
-          </Button>
-          <TextField
-            margin="normal"
-            required
-            value={nickname}
+            value={newNickname}
             label="Nick Name"
-            name="nickname"
+            name="newNickname"
+            placeholder={`${nickname}`}
             onChange={onChange}
             error={validation_nickname()}
             helperText={
@@ -203,9 +170,9 @@ const JoinForm = (props) => {
             margin="normal"
             required
             fullWidth
-            value={password}
-            name="password"
-            label="Password"
+            value={newPassword}
+            name="newPassword"
+            label="Change Password"
             type="text"
             onChange={onChange}
             error={validation_password()}
@@ -219,12 +186,12 @@ const JoinForm = (props) => {
             fullWidth
             value={passwordConfirm}
             name="passwordConfirm"
-            label="Password Confirm"
+            label="Change Password Confirm"
             type="text"
             onChange={onChange}
           />
           <Button fullWidth type="submit" variant="contained">
-            Sign Up
+            SAVE
           </Button>
         </Box>
       </Boxs>
@@ -252,4 +219,4 @@ const LoginImg = styled.img`
   max-width: 300px;
 `;
 
-export default JoinForm;
+export default MypageForm;
