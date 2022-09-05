@@ -5,6 +5,8 @@ import TextField from "@mui/material/TextField";
 import Link from "@mui/material/Link";
 import Box from "@mui/material/Box";
 import loginImg from "../../imgs/login_img.png";
+import { useDispatch } from "react-redux";
+import { logIn } from "../../redux/modules/authSlice";
 
 const LoginForm = (props) => {
   const REGEX_EMAIL =
@@ -18,14 +20,15 @@ const LoginForm = (props) => {
   const [isEmail, setIsEmail] = useState(false);
   const [isPassword, setIsPassword] = useState(false);
 
+  const dispatch = useDispatch();
+
   const handleSubmit = (event) => {
     event.preventDefault();
     if (login) {
       alert("로그인 가능!");
-      // onSignUp(username, password, name, email, url).catch(setError);
+      dispatch(logIn({ email, password }));
     } else {
       alert("로그인 안돼!");
-      // onLogin(username, password).catch(setError);
     }
   };
   const onChange = (event) => {
