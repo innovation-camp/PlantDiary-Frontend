@@ -5,7 +5,11 @@ import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
 import loginImg from "../../imgs/login_img.png";
 import { useDispatch } from "react-redux";
-import { SignUp } from "../../redux/modules/authSlice";
+import {
+  signUp,
+  emailConfirm,
+  nicknameConfirm,
+} from "../../redux/modules/authSlice";
 
 const JoinForm = (props) => {
   const REGEX_EMAIL =
@@ -23,6 +27,9 @@ const JoinForm = (props) => {
   const [isNickname, setIsNickname] = useState(false);
   const [isPassword, setIsPassword] = useState(false);
 
+  const [availableEmail, setAvailableEmail] = useState("");
+  const [availableNickname, setAvailableNickname] = useState("");
+
   const dispatch = useDispatch();
   //TODO: 이메일, 닉네임 중복 확인 버튼 추가
   const handleSubmit = (event) => {
@@ -31,13 +38,22 @@ const JoinForm = (props) => {
     if (pwd_check !== true) {
       return;
     }
+    if (email !== availableEmail) {
+      alert("이메일 중복체크를 해주세요.");
+      return;
+    }
+    if (nickname !== availableNickname) {
+      alert("닉네임 중복체크를 해주세요.");
+      return;
+    }
     if (signup) {
       alert("회원가입 가능!");
       try {
-        dispatch(SignUp({ email, nickname, password }));
+        dispatch(signUp({ email, nickname, password }));
       } catch (error) {
         console.log(error);
       }
+      // TODO: 회원가입 성공시 로그인 페이지로 이동
     } else {
       alert("회원가입 안돼!");
     }
@@ -103,6 +119,30 @@ const JoinForm = (props) => {
     }
   }, [isEmail, isNickname, isPassword]);
 
+  const emailCheck = async () => {
+    // 값 받아와서 true 면? available email 에 현재 email 넣기
+    const result = await dispatch(emailConfirm(email));
+    // if (result) {
+    if (result.payload) {
+      alert("사용 가능한 이메일입니다.");
+      setAvailableEmail(email);
+    } else {
+      alert("다른 이메일을 사용하세요.");
+    }
+  };
+
+  const nicknameCheck = async () => {
+    // 값 받아와서 true 면? available nickname 에 현재 nickname 넣기
+    const result = await dispatch(nicknameConfirm(nickname));
+    console.log(result);
+    if (result.payload) {
+      alert("사용 가능한 닉네임입니다.");
+      setAvailableNickname(nickname);
+    } else {
+      alert("사용할 수 없는 닉네임입니다.");
+    }
+  };
+
   const password_check = () => {
     if (password === passwordConfirm) {
       return true;
@@ -123,7 +163,6 @@ const JoinForm = (props) => {
           <TextField
             margin="normal"
             required
-            fullWidth
             value={email}
             label="Email Address"
             name="email"
@@ -132,12 +171,19 @@ const JoinForm = (props) => {
             error={validation_email()}
             helperText={validation_email() ? "이메일 형식이 아닙니다." : ""}
           />
+          <Button
+            variant="outlined"
+            disabled={isEmail ? false : true}
+            sx={{ mt: 3, ml: 0.9 }}
+            onClick={emailCheck}
+          >
+            중복확인
+          </Button>
           <TextField
             margin="normal"
             required
-            fullWidth
             value={nickname}
-            label="Nick name"
+            label="Nick Name"
             name="nickname"
             onChange={onChange}
             error={validation_nickname()}
@@ -145,6 +191,14 @@ const JoinForm = (props) => {
               validation_nickname() ? "한글만 입력할 수 있습니다." : ""
             }
           />
+          <Button
+            variant="outlined"
+            disabled={isNickname ? false : true}
+            sx={{ mt: 3, ml: 0.9 }}
+            onClick={nicknameCheck}
+          >
+            중복확인
+          </Button>
           <TextField
             margin="normal"
             required
@@ -153,7 +207,6 @@ const JoinForm = (props) => {
             name="password"
             label="Password"
             type="text"
-            // autoComplete="current-password"
             onChange={onChange}
             error={validation_password()}
             helperText={
@@ -169,7 +222,6 @@ const JoinForm = (props) => {
             label="Password Confirm"
             type="text"
             onChange={onChange}
-            // autoComplete="current-password"
           />
           <Button fullWidth type="submit" variant="contained">
             Sign Up

@@ -1,40 +1,44 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import axios from "axios";
+import instance from "../../network/request";
 
-export const SignUp = createAsyncThunk("LOGIN", async (JoinInfo) => {
-  //   const res = await axios.get(`${process.env.REACT_APP_URL}/login`);
-
-  // const res = await axios.post(`localhost:3001/login`, JoinInfo);
-  // const { accessToken } = res.data;
-  // API 요청하는 콜마다 헤더에 accessToken 담아 보내도록 설정
-  // axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
-
-  // axios.post('/auth/login', variables)
-  //   .then(res => {
-  //     setCookie('token', res.payload.accessToken)
-  //     setCookie('exp', res.payload.accessTokenExpiresIn)
-  //     // token이 필요한 API 요청 시 header Authorization에 token 담아서 보내기
-  //     Axios.defaults.headers.common['Authorization'] = `Bearer ${res.payload.accessToken}`
-  //     Axios.get('/user/me')
-  //       .then(res => {
-  //         console.log(res);
-  //       })
-  //   })
-
-  // return res.status;  ???
+export const signUp = createAsyncThunk("SIGNUP", async (JoinInfo) => {
+  const res = await instance.post(`/api/auth/register`, JoinInfo);
+  console.log("res signup > ", res.data);
   return console.log("SignUp > ", JoinInfo);
 });
 
-// 로그인
-// 이메일 중복 확인 api
-// 닉네임 중복 확인 api
+export const logIn = createAsyncThunk("LOGIN", async (loginInfo) => {
+  const res = await instance.post(`/api/auth/login`, loginInfo);
+  console.log("res login > ", res.data);
+  return console.log("SignUp > ", loginInfo);
+});
+
+export const emailConfirm = createAsyncThunk("CONFIRM_EMAIL", async (email) => {
+  const res = await instance.get(`/api/auth/email`, email);
+  console.log("res email > ", res.data);
+  return true;
+});
+
+export const nicknameConfirm = createAsyncThunk(
+  "CONFIRM_NiCKNAME",
+  async (nickname) => {
+    const res = await instance.get(`/api/auth/nickname`, nickname);
+    console.log("res email > ", res.data);
+    return console.log("nickname? > ", nickname);
+  }
+);
 
 const authSlice = createSlice({
-  name: "login",
+  name: "auth",
   initialState: {
-    posts: [],
+    user: [],
   },
   reducers: {},
+  extraReducers: (builder) => {
+    builder.addCase(logIn.fulfilled, (state, action) => {
+      state.user = [...action.payload];
+    });
+  },
 });
 
 export default authSlice.reducer;
