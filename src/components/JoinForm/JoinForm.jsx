@@ -3,6 +3,7 @@ import styled from "styled-components";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
+import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import loginImg from "../../imgs/login_img.png";
 import { useDispatch } from "react-redux";
 import {
@@ -53,7 +54,7 @@ const JoinForm = (props) => {
       } catch (error) {
         console.log(error);
       }
-      // TODO: 회원가입 성공시 로그인 페이지로 이동
+      // TODO:
     } else {
       alert("회원가입 안돼!");
     }
@@ -223,7 +224,13 @@ const JoinForm = (props) => {
             type="text"
             onChange={onChange}
           />
-          <Button fullWidth type="submit" variant="contained">
+          <Button
+            fullWidth
+            type="submit"
+            variant="contained"
+            color="success"
+            endIcon={<ArrowForwardIcon />}
+          >
             Sign Up
           </Button>
         </Box>

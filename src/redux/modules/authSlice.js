@@ -19,7 +19,7 @@ export const logIn = createAsyncThunk("LOGIN", async (loginInfo) => {
 // store 에서 가져올 수 있지 않나..? 저장해놨다면?
 export const mypage = createAsyncThunk("MYPAGE", async () => {
   // const res = await instance.get(`/api/auth/mypage`);
-  const res = await instance.get(`/user`);
+  const res = await instance.get(`/user`); // 임시 🐥
   return res.data;
 });
 
@@ -30,10 +30,6 @@ export const changeUserInfo = createAsyncThunk(
     return res.data;
   }
 );
-
-// 마이페이지 조회 및 수정 api 가 동일
-// 보내주는 데이터가 있다면, 수정해주고 없다면
-// 그냥 토큰에 맞는 유저 정보를 주는거?
 
 export const emailConfirm = createAsyncThunk("CONFIRM_EMAIL", async (email) => {
   const res = await instance.get(`/api/auth/email`, email);
@@ -50,10 +46,19 @@ export const nicknameConfirm = createAsyncThunk(
   }
 );
 
+// TODO: post 전체조회. 나중에 postSlice 로 이동
+export const getPosts = createAsyncThunk("GET_POSTS", async () => {
+  // const res = await instance.get(`/api/posts`);
+  const res = await instance.get(`/posts`); // 임시 🐥
+  console.log("res posts > ", res.data[0]);
+  return res.data[0];
+});
+
 const authSlice = createSlice({
   name: "auth",
   initialState: {
     user: [],
+    posts: [],
   },
   reducers: {},
   extraReducers: (builder) => {
@@ -62,6 +67,9 @@ const authSlice = createSlice({
     });
     builder.addCase(mypage.fulfilled, (state, action) => {
       state.user = [...action.payload];
+    });
+    builder.addCase(getPosts.fulfilled, (state, action) => {
+      state.posts = [...action.payload.data];
     });
   },
 });

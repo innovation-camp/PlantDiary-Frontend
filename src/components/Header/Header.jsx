@@ -1,33 +1,87 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
-// import img_home from "./home_icon.png";
+import img_home from "../../imgs/logo.png";
+import Button from "@mui/material/Button";
+import LoginIcon from "@mui/icons-material/Login";
+import CreateIcon from "@mui/icons-material/Create";
+import PersonIcon from "@mui/icons-material/Person";
+import Box from "@mui/material/Box";
+import LogoutIcon from "@mui/icons-material/Logout";
+import { useDispatch, useSelector } from "react-redux";
+import { mypage } from "../../redux/modules/authSlice";
 
 const Header = () => {
+  const user = useSelector((store) => store.auth.user)[0];
+  const [username, setUsername] = useState();
+
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
-  // const pathname = window.location.pathname;
+  useEffect(() => {
+    dispatch(mypage());
+  }, []);
 
-  // const goToPost = () => {
-  //   navigate("/post");
-  // };
+  useEffect(() => {
+    if (user) {
+      const { nickname } = user;
+      // setUsername(nickname);
+      setUsername("");
+    }
+  }, [user]);
 
-  //   const goToHome = () => {
-  //     window.location.replace("/");
-  //   };
+  const login = () => {
+    navigate("/login");
+  };
+
+  const logout = () => {
+    if (window.confirm("로그아웃 하시겠습니까?")) {
+      // onConfirm();
+    } else {
+      // onCancel();
+    }
+  };
+
+  const goMypage = () => {
+    navigate("/mypage");
+  };
+
+  const goHome = () => {
+    window.location.replace("/");
+  };
 
   return (
     <div>
       <HeaderContainer>
-        {/* <HomeImg src={img_home} onClick={goToHome} /> */}
+        <HomeImg src={img_home} onClick={goHome} />
         <Title>Plant Diary</Title>
-        <p>Hi</p>
-        {/* <button
-          width="6em"
-          onClick={goToPost}
-          children="새 글 작성"
-          // display={pathname === "/" ? "block" : "none"}
-        /> */}
+        {username ? (
+          <Button
+            onClick={login}
+            variant="contained"
+            color="success"
+            endIcon={<LoginIcon />}
+          >
+            Log In
+          </Button>
+        ) : (
+          <Box>
+            <Button onClick={goMypage} variant="text" color="success">
+              <PersonIcon />
+            </Button>
+            <Button
+              onClick={login}
+              variant="contained"
+              color="success"
+              endIcon={<CreateIcon />}
+            >
+              글쓰기
+            </Button>
+            <Button onClick={logout} variant="text" color="error">
+              <LogoutIcon />
+            </Button>
+          </Box>
+        )}
       </HeaderContainer>
       <Empty></Empty>
     </div>
@@ -43,8 +97,8 @@ const HeaderContainer = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0 1em 0 1em;
-  border-bottom: 2px solid grey;
+  padding: 0 2em 0 2em;
+  border-bottom: 2px solid lightgray;
   background-color: #fff;
   z-index: 1;
 `;
@@ -60,9 +114,9 @@ const Title = styled.h1`
   transform: translate(-50%, 0);
 `;
 
-// const HomeImg = styled.img`
-//   height: 3em;
-//   cursor: pointer;
-// `;
+const HomeImg = styled.img`
+  height: 2.5em;
+  cursor: pointer;
+`;
 
 export default Header;
