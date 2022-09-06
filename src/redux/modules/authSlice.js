@@ -31,10 +31,6 @@ export const changeUserInfo = createAsyncThunk(
   }
 );
 
-// 마이페이지 조회 및 수정 api 가 동일
-// 보내주는 데이터가 있다면, 수정해주고 없다면
-// 그냥 토큰에 맞는 유저 정보를 주는거?
-
 export const emailConfirm = createAsyncThunk("CONFIRM_EMAIL", async (email) => {
   const res = await instance.get(`/api/auth/email`, email);
   console.log("res email > ", res.data);
@@ -73,7 +69,6 @@ const authSlice = createSlice({
       state.user = [...action.payload];
     });
     builder.addCase(getPosts.fulfilled, (state, action) => {
-      // console.log("payload > ", action.payload.data);
       state.posts = [...action.payload.data];
     });
   },

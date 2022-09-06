@@ -4,6 +4,7 @@ import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import Link from "@mui/material/Link";
 import Box from "@mui/material/Box";
+import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import loginImg from "../../imgs/login_img.png";
 import { useDispatch } from "react-redux";
 import { logIn } from "../../redux/modules/authSlice";
@@ -111,7 +112,13 @@ const LoginForm = (props) => {
               validation_password() ? "8자리 이상 영문, 숫자만 입력하세요." : ""
             }
           />
-          <Button fullWidth type="submit" variant="contained">
+          <Button
+            fullWidth
+            type="submit"
+            variant="contained"
+            color="success"
+            endIcon={<ArrowForwardIcon />}
+          >
             Log In
           </Button>
           <LinkBox>

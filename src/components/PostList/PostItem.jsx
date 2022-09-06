@@ -8,6 +8,10 @@ import { Button, CardActionArea, CardActions } from "@mui/material";
 
 const PostItem = ({ post }) => {
   const { title, thumbnail } = post;
+
+  // TODO: post id 넣기
+  const goDetail = () => {};
+
   return (
     <CardContainer>
       <Card sx={{ maxWidth: 345 }}>
@@ -29,7 +33,7 @@ const PostItem = ({ post }) => {
           </CardContent>
         </CardActionArea>
         <CardActions>
-          <Button size="small" color="primary">
+          <Button size="small" color="primary" onClick={goDetail}>
             view detail
           </Button>
         </CardActions>
