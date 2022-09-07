@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getPosts } from "../../redux/modules/authSlice";
+import { getPosts } from "../../redux/modules/postSlice";
 import styled from "styled-components";
 import PostItem from "./PostItem";
 
 const PostList = () => {
-  const postList = useSelector((store) => store.auth.posts);
+  const postList = useSelector((store) => store.post.posts);
   const [posts, setPosts] = useState();
   const dispatch = useDispatch();
 

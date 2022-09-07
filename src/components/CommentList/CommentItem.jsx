@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
@@ -15,10 +15,13 @@ import { deleteComment, updateComment } from "../../redux/modules/commentSlice";
 const CommentItem = ({ comment }) => {
   const { id, content, writer } = comment;
   const { nickname } = writer;
-  const user = useSelector((store) => store.auth.user)[0]; // 로그인 한 사용자 정보 가져옴
   const [open, setOpen] = useState(false);
   const [newComment, setNewComment] = useState("");
+
   const dispatch = useDispatch();
+
+  const user = useSelector((store) => store.auth.user); // 로그인 한 사용자 정보 가져옴
+
   const onUpdate = () => {
     setOpen(true);
   };
@@ -36,7 +39,6 @@ const CommentItem = ({ comment }) => {
       id: id,
       content: newComment,
       writer: {
-        id: user.id,
         nickname: user.nickname,
       },
     };
@@ -54,6 +56,7 @@ const CommentItem = ({ comment }) => {
     } else {
     }
   };
+
   return (
     <>
       <ItemContainer>

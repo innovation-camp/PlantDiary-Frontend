@@ -5,12 +5,16 @@ import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
 import { Button, CardActionArea, CardActions } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 const PostItem = ({ post }) => {
-  const { title, thumbnail } = post;
+  const { id, title, content, thumbnail, writer } = post;
+  const navigate = useNavigate();
 
   // TODO: post id 넣기
-  const goDetail = () => {};
+  const goDetail = () => {
+    navigate(`/post/${id}`);
+  };
 
   return (
     <CardContainer>
@@ -27,8 +31,7 @@ const PostItem = ({ post }) => {
               {title}
             </Typography>
             <Typography variant="body2" color="text.secondary">
-              Lizards are a widespread group of squamate reptiles, with over
-              6,000 species, ranging across all continents except Antarctica
+              {content}
             </Typography>
           </CardContent>
         </CardActionArea>
@@ -36,6 +39,7 @@ const PostItem = ({ post }) => {
           <Button size="small" color="primary" onClick={goDetail}>
             view detail
           </Button>
+          <Nickname>🌱 {writer.nickname}</Nickname>
         </CardActions>
       </Card>
     </CardContainer>
@@ -48,6 +52,11 @@ const CardContainer = styled.div`
   flex-wrap: wrap;
   justify-content: center;
   margin: 1em;
+`;
+
+const Nickname = styled.div`
+  text-align: right;
+  margin-left: 5em;
 `;
 
 export default PostItem;

@@ -8,7 +8,6 @@ const MainPage = (props) => (
   <MainContainer>
     <HeaderContainer />
     <PostList />
-    <CommentList />
   </MainContainer>
 );
 

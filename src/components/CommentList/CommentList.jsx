@@ -14,7 +14,7 @@ const CommentList = () => {
   // TODO: getComments(id) 를 넣어서 사용! id 는 게시글 id
   useEffect(() => {
     dispatch(getComments());
-  }, [comments]);
+  }, []);
 
   useEffect(() => {
     setcommentList(comments);
@@ -37,8 +37,6 @@ const CommentsConatiner = styled.div`
   justify-content: center;
   max-width: 600px;
   margin: auto;
-  padding: 2em 2em 1em 2em;
-  border: 1px solid lightgrey;
   border-radius: 0.3em;
 `;
 

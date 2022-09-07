@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { postComment } from "../../redux/modules/commentSlice";
 
 const CommentForm = () => {
-  const user = useSelector((store) => store.auth.user)[0]; // 로그인 한 사용자 정보 가져옴
+  const user = useSelector((store) => store.auth.user); // 로그인 한 사용자 정보 가져옴
   const [comment, setComment] = useState("");
   const dispatch = useDispatch();
   const commentBoxText = user && user.nickname + " 님, 댓글을 남겨 보세요!";
@@ -20,7 +20,6 @@ const CommentForm = () => {
       id: Date.now(),
       content: comment,
       writer: {
-        id: user.id,
         nickname: user.nickname,
       },
     };

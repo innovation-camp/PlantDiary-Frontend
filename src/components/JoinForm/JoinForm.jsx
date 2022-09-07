@@ -11,6 +11,7 @@ import {
   emailConfirm,
   nicknameConfirm,
 } from "../../redux/modules/authSlice";
+import { useNavigate } from "react-router-dom";
 
 const JoinForm = (props) => {
   const REGEX_EMAIL =
@@ -31,6 +32,7 @@ const JoinForm = (props) => {
   const [availableEmail, setAvailableEmail] = useState("");
   const [availableNickname, setAvailableNickname] = useState("");
 
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   //TODO: 이메일, 닉네임 중복 확인 버튼 추가
   const handleSubmit = (event) => {
@@ -48,9 +50,9 @@ const JoinForm = (props) => {
       return;
     }
     if (signup) {
-      alert("회원가입 가능!");
       try {
         dispatch(signUp({ email, nickname, password }));
+        navigate("/login");
       } catch (error) {
         console.log(error);
       }

@@ -1,12 +1,15 @@
 {
-  "user": [
-    {
+  "user": {
+    "success": true,
+    "data": {
       "id": "1",
       "email": "leeseul@google.com",
-      "nickname": "moon4",
-      "password": "1234"
+      "nickname": "moon6",
+      "password": "1234",
+      "createdAt": "2022-09-06",
+      "modifiedAt": "2022-09-06"
     }
-  ],
+  },
   "comments": [
     {
       "id": 1,
@@ -46,6 +49,13 @@
       "writer": {
         "id": 0.06086842587083652,
         "nickname": "moon4"
+      }
+    },
+    {
+      "id": 1662521479985,
+      "content": "sdffs",
+      "writer": {
+        "nickname": "moon99"
       }
     }
   ],
@@ -100,5 +110,14 @@
       ],
       "statusCode": "200"
     }
-  ]
+  ],
+  "post": {
+    "id": 5,
+    "title": "제가 제일 아끼는 땡땡이5",
+    "content": "습도가 높아서 잎이 무르네요..5",
+    "thumbnail": "https://images.pexels.com/photos/9413788/pexels-photo-9413788.jpeg?auto=compress&cs=tinysrgb&w=800&lazy=load",
+    "writer": {
+      "nickname": "moon5"
+    }
+  }
 }
