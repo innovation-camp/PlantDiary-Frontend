@@ -33,13 +33,19 @@ const PostDetailForm = () => {
   const onUpdate = () => {
     // TODO: 정보 가지고 수정 페이지로
     navigate(`/post/update/${id}`, {
-      state: { preTitle: title, preContent: content, preThumbnail: thumbnail },
+      state: {
+        id,
+        preTitle: title,
+        preContent: content,
+        preThumbnail: thumbnail,
+      },
     });
   };
 
   const remove = () => {
     if (window.confirm("삭제 하시겠습니까?")) {
       dispatch(deletePost(params.id));
+      navigate("/");
     } else {
     }
   };

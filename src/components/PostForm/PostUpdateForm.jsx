@@ -16,7 +16,7 @@ const PostUpdateForm = () => {
   const [thumbnail, setThumbnail] = useState();
 
   const {
-    state: { preTitle, preContent, preThumbnail },
+    state: { id, preTitle, preContent, preThumbnail },
   } = useLocation();
 
   const loadFile = (event) => {
@@ -49,7 +49,7 @@ const PostUpdateForm = () => {
       return;
     }
     console.log("thumbnail > ", thumbnail);
-    dispatch(updatePost({ title, content, thumbnail }));
+    dispatch(updatePost({ id, title, content, thumbnail }));
     alert("수정이 완료되었습니다.");
     navigate("/");
   };

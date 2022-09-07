@@ -3,11 +3,12 @@ import { useDispatch } from "react-redux";
 import styled from "styled-components";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
-import { addPost } from "../../redux/modules/postSlice";
+import { addPost, uploadThumbnail } from "../../redux/modules/postSlice";
+import { useNavigate } from "react-router-dom";
 
 const PostForm = () => {
   const dispatch = useDispatch();
-
+  const navigate = useNavigate();
   const [title, setTitle] = useState();
   const [content, setContent] = useState();
   const [thumbnail, setThumbnail] = useState("");
@@ -25,9 +26,13 @@ const PostForm = () => {
     }
   };
 
-  const loadFile = (event) => {
+  const loadFile = async (event) => {
     const file = event.target.files[0];
-    setThumbnail(file);
+    const uploaded = await dispatch(uploadThumbnail(file)).then(
+      (res) => res.data
+    );
+    console.log("uploaded > ", uploaded);
+    setThumbnail(uploaded);
   };
 
   const post = () => {
@@ -38,6 +43,7 @@ const PostForm = () => {
     console.log("thumbnail > ", thumbnail);
     dispatch(addPost({ title, content, thumbnail }));
     setThumbnail("");
+    navigate("/");
   };
 
   return (
@@ -56,7 +62,7 @@ const PostForm = () => {
           />
           <FileInput
             type="file"
-            name="chooseFile"
+            name="thumbnail"
             accept="image/*"
             onChange={loadFile}
           />

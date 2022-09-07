@@ -11,7 +11,6 @@ const PostItem = ({ post }) => {
   const { id, title, content, thumbnail, writer } = post;
   const navigate = useNavigate();
 
-  // TODO: post id 넣기
   const goDetail = () => {
     navigate(`/post/${id}`);
   };

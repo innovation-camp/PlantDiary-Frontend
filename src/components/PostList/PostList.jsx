@@ -11,7 +11,7 @@ const PostList = () => {
 
   useEffect(() => {
     dispatch(getPosts());
-  }, []);
+  }, [postList]);
 
   useEffect(() => {
     setPosts(postList);
@@ -20,7 +20,7 @@ const PostList = () => {
   return (
     <PostContainer>
       {posts &&
-        Array.from(posts).map((post) => {
+        posts.map((post) => {
           return <PostItem post={post} key={post.id} />;
         })}
     </PostContainer>

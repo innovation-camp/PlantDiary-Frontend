@@ -53,7 +53,7 @@ export const nicknameConfirm = createAsyncThunk(
 const authSlice = createSlice({
   name: "auth",
   initialState: {
-    user: { isAuthenticated: true, nickname: "moon5" },
+    user: { isAuthenticated: true, nickname: "버블티" },
     posts: [],
   },
   reducers: {},
