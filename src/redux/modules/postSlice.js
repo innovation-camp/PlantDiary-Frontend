@@ -3,25 +3,29 @@ import instance from "../../network/request";
 
 export const getPosts = createAsyncThunk("GET_POSTS", async () => {
   const res = await instance.get(`/api/posts`);
-  // const res = await instance.get(`/posts`); // 임시 🐥
-  console.log("res posts > ", res.data[0]);
-  return res.data[0];
+  return res.data;
 });
 
 export const getPost = createAsyncThunk("GET_POST", async (id) => {
   const res = await instance.get(`/api/posts/${id}`);
-  // const res = await instance.get(`/post`); // 임시 🐥
-  console.log("res post > ", res.data);
+  console.log("res getPost > ", res.data);
   return res.data;
 });
 
 export const addPost = createAsyncThunk("ADD_POST", async (post) => {
+  console.log("res ? ", post);
   const res = await instance.post(`/api/posts`, post);
-  // const res = await instance.post(`/post`); // 임시 🐥
-  console.log("res post > ", post);
-  //   return res.data;
-  return;
+  return res.data;
 });
+
+export const uploadThumbnail = createAsyncThunk(
+  "UPLOAD_THUMBNAIL",
+  async (thumbnail) => {
+    const res = await instance.post(`/api/posts/upload`, thumbnail);
+    console.log("res uploadThumbnail ? ", res.data);
+    return res.data;
+  }
+);
 
 export const updatePost = createAsyncThunk("UPDATE_POST", async (post) => {
   const { id, title, content, thumbnail } = post;
@@ -30,17 +34,13 @@ export const updatePost = createAsyncThunk("UPDATE_POST", async (post) => {
     content,
     thumbnail,
   });
-  // const res = await instance.put(`/post`); // 임시 🐥
   console.log("res update > ", res.data);
-  //   return res.data;
-  return;
+  return res.data;
 });
 
 export const deletePost = createAsyncThunk("DELETE_POST", async (id) => {
-  const res = await instance.get(`/api/posts/${id}`);
-  // const res = await instance.get(`/posts`); // 임시 🐥
-  console.log("res posts > ", res.data[0]);
-  return res.data[0];
+  const res = await instance.delete(`/api/posts/${id}`);
+  return res.data;
 });
 
 const postSlice = createSlice({
@@ -51,7 +51,10 @@ const postSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder.addCase(getPosts.fulfilled, (state, action) => {
-      state.posts = [...action.payload.data];
+      state.posts = [...action.payload];
+    });
+    builder.addCase(addPost.fulfilled, (state, action) => {
+      state.posts.push(action.payload);
     });
   },
 });

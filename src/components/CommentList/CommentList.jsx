@@ -5,15 +5,14 @@ import { getComments } from "../../redux/modules/commentSlice";
 import CommentForm from "./CommentForm";
 import CommentItem from "./CommentItem";
 
-const CommentList = () => {
+const CommentList = ({ id }) => {
   const [commentList, setcommentList] = useState("");
   const dispatch = useDispatch();
 
   const comments = useSelector((store) => store.comment.comment);
 
-  // TODO: getComments(id) 를 넣어서 사용! id 는 게시글 id
   useEffect(() => {
-    dispatch(getComments());
+    dispatch(getComments(id));
   }, []);
 
   useEffect(() => {
