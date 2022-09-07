@@ -15,6 +15,9 @@ const PostItem = ({ post }) => {
     navigate(`/post/${id}`);
   };
 
+  const defaultImg =
+    "https://res.cloudinary.com/dozq0lpef/image/upload/v1662544379/ektkcu58eevdmbwbntqw.jpg";
+
   return (
     <CardContainer>
       <Card sx={{ maxWidth: 345 }}>
@@ -22,7 +25,7 @@ const PostItem = ({ post }) => {
           <CardMedia
             component="img"
             height="140"
-            image={thumbnail}
+            image={thumbnail ? thumbnail : defaultImg}
             alt="photo"
           />
           <CardContent>

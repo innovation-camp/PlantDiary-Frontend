@@ -28,12 +28,11 @@ const PostList = () => {
 };
 
 const PostContainer = styled.div`
-  /* height: 100vh; */
   display: flex;
   flex-wrap: wrap;
-  max-width: 900px;
+  max-width: 600px;
   justify-content: center;
-  padding: 2em;
+  padding-top: 1em;
   margin: auto;
 `;
 

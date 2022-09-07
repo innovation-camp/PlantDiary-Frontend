@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import instance from "../../network/request";
+import { instance, imageClient } from "../../network/request";
 
 export const getPosts = createAsyncThunk("GET_POSTS", async () => {
   const res = await instance.get(`/api/posts`);
@@ -13,15 +13,15 @@ export const getPost = createAsyncThunk("GET_POST", async (id) => {
 });
 
 export const addPost = createAsyncThunk("ADD_POST", async (post) => {
-  console.log("res ? ", post);
   const res = await instance.post(`/api/posts`, post);
+  console.log("res ? ", post);
   return res.data;
 });
 
 export const uploadThumbnail = createAsyncThunk(
   "UPLOAD_THUMBNAIL",
   async (thumbnail) => {
-    const res = await instance.post(`/api/posts/upload`, thumbnail);
+    const res = await imageClient.post(`/api/posts/upload`, thumbnail);
     console.log("res uploadThumbnail ? ", res.data);
     return res.data;
   }

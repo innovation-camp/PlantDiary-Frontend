@@ -7,7 +7,6 @@ import Mypage from "./pages/Mypage";
 import Post from "./pages/Post";
 import PostDetail from "./pages/PostDetail";
 import PsotUpdate from "./pages/PsotUpdate";
-import Header from "./components/Header/Header";
 
 function App() {
   return (

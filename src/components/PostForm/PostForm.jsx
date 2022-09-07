@@ -27,11 +27,10 @@ const PostForm = () => {
   };
 
   const loadFile = async (event) => {
-    const file = event.target.files[0];
+    const file = { images: event.target.files[0] };
     const uploaded = await dispatch(uploadThumbnail(file)).then(
-      (res) => res.data
+      (res) => res.payload.thumbnail
     );
-    console.log("uploaded > ", uploaded);
     setThumbnail(uploaded);
   };
 
