@@ -8,6 +8,7 @@ import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import loginImg from "../../imgs/login_img.png";
 import { useDispatch } from "react-redux";
 import { logIn } from "../../redux/modules/authSlice";
+import { useNavigate } from "react-router-dom";
 
 const LoginForm = (props) => {
   const REGEX_EMAIL =
@@ -21,17 +22,19 @@ const LoginForm = (props) => {
   const [isEmail, setIsEmail] = useState(false);
   const [isPassword, setIsPassword] = useState(false);
 
+  const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const handleSubmit = (event) => {
     event.preventDefault();
     if (login) {
-      alert("로그인 가능!");
       dispatch(logIn({ email, password }));
+      navigate("/");
     } else {
       alert("로그인 안돼!");
     }
   };
+
   const onChange = (event) => {
     const {
       target: { name, value },

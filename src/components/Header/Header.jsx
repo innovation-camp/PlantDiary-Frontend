@@ -9,24 +9,22 @@ import PersonIcon from "@mui/icons-material/Person";
 import Box from "@mui/material/Box";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { useDispatch, useSelector } from "react-redux";
-import { mypage } from "../../redux/modules/authSlice";
+import { logOut } from "../../redux/modules/authSlice";
 
 const Header = () => {
-  const user = useSelector((store) => store.auth.user)[0];
+  const user = useSelector((store) => store.auth.user);
   const [username, setUsername] = useState();
-
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(mypage());
-  }, []);
-
-  useEffect(() => {
     if (user) {
-      const { nickname } = user;
-      // setUsername(nickname);
-      setUsername("");
+      const { isAuthenticated, nickname } = user;
+      if (isAuthenticated) {
+        setUsername(nickname);
+      } else {
+        setUsername("");
+      }
     }
   }, [user]);
 
@@ -34,11 +32,14 @@ const Header = () => {
     navigate("/login");
   };
 
-  const logout = () => {
+  const post = () => {
+    navigate("/post");
+  };
+
+  const onLogout = () => {
     if (window.confirm("로그아웃 하시겠습니까?")) {
-      // onConfirm();
+      dispatch(logOut());
     } else {
-      // onCancel();
     }
   };
 
@@ -55,7 +56,7 @@ const Header = () => {
       <HeaderContainer>
         <HomeImg src={img_home} onClick={goHome} />
         <Title>Plant Diary</Title>
-        {username ? (
+        {!username ? (
           <Button
             onClick={login}
             variant="contained"
@@ -70,14 +71,14 @@ const Header = () => {
               <PersonIcon />
             </Button>
             <Button
-              onClick={login}
+              onClick={post}
               variant="contained"
               color="success"
               endIcon={<CreateIcon />}
             >
               글쓰기
             </Button>
-            <Button onClick={logout} variant="text" color="error">
+            <Button onClick={onLogout} variant="text" color="error">
               <LogoutIcon />
             </Button>
           </Box>

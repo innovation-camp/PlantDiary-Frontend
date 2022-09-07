@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import styled from "styled-components";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
@@ -17,6 +17,7 @@ const MypageForm = () => {
 
   const [email, setEmail] = useState("");
   const [nickname, setNickname] = useState("");
+  const [user, setUser] = useState("");
 
   const [newNickname, setNewNickname] = useState("");
   const [newPassword, setNewPassword] = useState("");
@@ -30,12 +31,9 @@ const MypageForm = () => {
 
   const dispatch = useDispatch();
 
-  // TODO: 로그인시 store 에 유저 정보를 넣어줬다면, 굳이 api 요청을 안해도 되나?
   useEffect(() => {
-    dispatch(mypage());
+    dispatch(mypage()).then((res) => setUser(res.payload));
   }, []);
-
-  const user = useSelector((store) => store.auth.user)[0];
 
   useEffect(() => {
     if (user) {

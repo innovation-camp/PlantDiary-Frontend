@@ -4,7 +4,7 @@ import instance from "../../network/request";
 // export const getComments = createAsyncThunk("GET_COMMENTS", async (id) => {
 //   const res = await instance.get(`/api/posts/${id}/comments`);
 export const getComments = createAsyncThunk("GET_COMMENTS", async () => {
-  const res = await instance.get(`/comments`); // 임시 🐥 위에 주석 두 줄로 바꿔야 함!
+  const res = await instance.get(`/comments/`); // 임시 🐥 위에 주석 두 줄로 바꿔야 함!
   return res.data;
 });
 

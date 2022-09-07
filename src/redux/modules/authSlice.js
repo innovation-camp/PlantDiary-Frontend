@@ -9,18 +9,21 @@ export const signUp = createAsyncThunk("SIGNUP", async (JoinInfo) => {
 
 export const logIn = createAsyncThunk("LOGIN", async (loginInfo) => {
   const res = await instance.post(`/api/auth/login`, loginInfo);
+  // export const logIn = createAsyncThunk("LOGIN", async () => {
+  //   const res = await instance.get(`/user`); // 임시 🐥
   console.log("res logIn > ", res.data);
   return res.data;
 });
 
-// TODO: 마이페이지 요청시 토큰에 해당하는 user 데이터를 응답 받음.
-// 현재는 받는 데이터가 없어서 리듀서에서 넣..?
-// 근데 로그인 된 상태면..이미 user 에 들어가 있을테니까, 새로 api 요청을 안해도
-// store 에서 가져올 수 있지 않나..? 저장해놨다면?
+export const logOut = createAsyncThunk("LOGOUT", async () => {
+  return;
+});
+
 export const mypage = createAsyncThunk("MYPAGE", async () => {
   // const res = await instance.get(`/api/auth/mypage`);
   const res = await instance.get(`/user`); // 임시 🐥
-  return res.data;
+  console.log("mypage > ", res.data);
+  return res.data.success === true ? res.data.data : false;
 });
 
 export const changeUserInfo = createAsyncThunk(
@@ -46,30 +49,22 @@ export const nicknameConfirm = createAsyncThunk(
   }
 );
 
-// TODO: post 전체조회. 나중에 postSlice 로 이동
-export const getPosts = createAsyncThunk("GET_POSTS", async () => {
-  // const res = await instance.get(`/api/posts`);
-  const res = await instance.get(`/posts`); // 임시 🐥
-  console.log("res posts > ", res.data[0]);
-  return res.data[0];
-});
-
+// TODO: user default 값 수정해야 함. 일단 로그인 된 상태로 테스트하기 위해 값 넣어둠
 const authSlice = createSlice({
   name: "auth",
   initialState: {
-    user: [],
+    user: { isAuthenticated: true, nickname: "moon5" },
     posts: [],
   },
   reducers: {},
   extraReducers: (builder) => {
     builder.addCase(logIn.fulfilled, (state, action) => {
-      state.user = [...action.payload];
+      state.user.isAuthenticated = action.payload[0].success;
+      state.user.nickname = action.payload[0].data.nickname;
     });
-    builder.addCase(mypage.fulfilled, (state, action) => {
-      state.user = [...action.payload];
-    });
-    builder.addCase(getPosts.fulfilled, (state, action) => {
-      state.posts = [...action.payload.data];
+    builder.addCase(logOut.fulfilled, (state, action) => {
+      state.user.isAuthenticated = false;
+      state.user.nickname = "";
     });
   },
 });
