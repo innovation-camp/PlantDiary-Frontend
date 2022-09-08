@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 import styled from "styled-components";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
-import { updatePost } from "../../redux/modules/postSlice";
+import { updatePost, uploadThumbnail } from "../../redux/modules/postSlice";
 import { useLocation, useNavigate } from "react-router-dom";
 
 const PostUpdateForm = () => {
@@ -19,9 +19,12 @@ const PostUpdateForm = () => {
     state: { id, preTitle, preContent, preThumbnail },
   } = useLocation();
 
-  const loadFile = (event) => {
-    const file = event.target.files[0];
-    setThumbnail(file);
+  const loadFile = async (event) => {
+    const file = { images: event.target.files[0] };
+    const uploaded = await dispatch(uploadThumbnail(file)).then(
+      (res) => res.payload.thumbnail
+    );
+    setThumbnail(uploaded);
   };
 
   useState(() => {

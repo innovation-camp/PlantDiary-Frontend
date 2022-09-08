@@ -10,7 +10,7 @@ const PostDetail = () => {
     <>
       <Header />
       <PostDetailForm />
-      <CommentList id={params.id} />
+      <CommentList postId={params.id} />
     </>
   );
 };

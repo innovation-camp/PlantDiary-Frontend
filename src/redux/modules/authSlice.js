@@ -1,17 +1,21 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import instance from "../../network/request";
+import setAuthorizationToken from "../../util/setAuthorizationToken";
 
 export const signUp = createAsyncThunk("SIGNUP", async (JoinInfo) => {
   const res = await instance.post(`/api/auth/register`, JoinInfo);
-  console.log("res signup > ", res.data);
   return res.data;
 });
 
 export const logIn = createAsyncThunk("LOGIN", async (loginInfo) => {
   const res = await instance.post(`/api/auth/login`, loginInfo);
-  // export const logIn = createAsyncThunk("LOGIN", async () => {
-  //   const res = await instance.get(`/user`); // 임시 🐥
-  console.log("res logIn > ", res.data);
+  console.log("res logIn > ", res);
+  const accessToken = res.headers.get("Authorization");
+  // const refreshToken = res.headers.get("refreshToken");
+  console.log("accessToken :>> ", accessToken);
+  // console.log("refreshToken :>> ", refreshToken);
+  // localStorage.setItem("Authorization", `Bearer ${accessToken}`);
+  // localStorage.setItem("refreshToken", `${refreshToken}`);
   return res.data;
 });
 
@@ -20,8 +24,7 @@ export const logOut = createAsyncThunk("LOGOUT", async () => {
 });
 
 export const mypage = createAsyncThunk("MYPAGE", async () => {
-  // const res = await instance.get(`/api/auth/mypage`);
-  const res = await instance.get(`/user`); // 임시 🐥
+  const res = await instance.get(`/api/auth/mypage`);
   console.log("mypage > ", res.data);
   return res.data.success === true ? res.data.data : false;
 });
@@ -35,7 +38,7 @@ export const changeUserInfo = createAsyncThunk(
 );
 
 export const emailConfirm = createAsyncThunk("CONFIRM_EMAIL", async (email) => {
-  const res = await instance.get(`/api/auth/email`, email);
+  const res = await instance.post(`/api/auth/email`, { email });
   console.log("res email > ", res.data);
   return res.data;
 });
@@ -43,7 +46,7 @@ export const emailConfirm = createAsyncThunk("CONFIRM_EMAIL", async (email) => {
 export const nicknameConfirm = createAsyncThunk(
   "CONFIRM_NiCKNAME",
   async (nickname) => {
-    const res = await instance.get(`/api/auth/nickname`, nickname);
+    const res = await instance.post(`/api/auth/nickname`, { nickname });
     console.log("res email > ", res.data);
     return res.data;
   }
@@ -53,14 +56,18 @@ export const nicknameConfirm = createAsyncThunk(
 const authSlice = createSlice({
   name: "auth",
   initialState: {
-    user: { isAuthenticated: true, nickname: "버블티" },
+    user: { isAuthenticated: false, nickname: "" },
     posts: [],
   },
   reducers: {},
   extraReducers: (builder) => {
     builder.addCase(logIn.fulfilled, (state, action) => {
-      state.user.isAuthenticated = action.payload[0].success;
-      state.user.nickname = action.payload[0].data.nickname;
+      if (action.payload.success) {
+        state.user.isAuthenticated = action.payload.success;
+        state.user.nickname = action.payload.data.nickname;
+      } else {
+        return;
+      }
     });
     builder.addCase(logOut.fulfilled, (state, action) => {
       state.user.isAuthenticated = false;

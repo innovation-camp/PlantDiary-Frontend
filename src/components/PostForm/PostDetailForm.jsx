@@ -50,10 +50,13 @@ const PostDetailForm = () => {
     }
   };
 
+  const defaultImg =
+    "https://res.cloudinary.com/dozq0lpef/image/upload/v1662544379/ektkcu58eevdmbwbntqw.jpg";
+
   return (
     <DetailContainer>
       <Form>
-        <FormHeader thumbnail={thumbnail}>
+        <FormHeader thumbnail={thumbnail ? thumbnail : defaultImg}>
           <FormWriter>{nickname}</FormWriter>
           <FormTitle>{title}</FormTitle>
           <FormBtn>
