@@ -12,7 +12,7 @@ import DialogTitle from "@mui/material/DialogTitle";
 import { useDispatch, useSelector } from "react-redux";
 import { deleteComment, updateComment } from "../../redux/modules/commentSlice";
 
-const CommentItem = ({ comment }) => {
+const CommentItem = ({ comment, postId }) => {
   const { id, content, writer } = comment;
   const { nickname } = writer;
   const [open, setOpen] = useState(false);
@@ -31,15 +31,12 @@ const CommentItem = ({ comment }) => {
     setNewComment(text);
   };
 
-  // TODO:
   const update = () => {
-    // json db 사용 위해 아래 형식으로 데이터를 만들었지만,
-    // 실제 서버에 보낼때는 id와 content 만 있으면 됨.
     const sendData = {
       id: id,
-      content: newComment,
-      writer: {
-        nickname: user.nickname,
+      requestData: {
+        postId: postId,
+        content: newComment,
       },
     };
     dispatch(updateComment(sendData));
@@ -61,7 +58,6 @@ const CommentItem = ({ comment }) => {
     <>
       <ItemContainer>
         <Content>{content}</Content>
-
         {nickname && nickname === user.nickname ? (
           <>
             <IconButton onClick={onUpdate}>
@@ -76,7 +72,6 @@ const CommentItem = ({ comment }) => {
         )}
         <Writer>{nickname}</Writer>
       </ItemContainer>
-
       <div>
         <Dialog open={open} onClose={handleClose}>
           <DialogTitle>댓글을 수정 하겠습니까?</DialogTitle>
@@ -117,6 +112,9 @@ const Content = styled.div`
   width: 100%;
 `;
 
-const Writer = styled.div``;
+const Writer = styled.div`
+  width: 10%;
+  text-align: right;
+`;
 
 export default CommentItem;

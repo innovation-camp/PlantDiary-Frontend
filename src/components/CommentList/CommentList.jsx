@@ -5,14 +5,14 @@ import { getComments } from "../../redux/modules/commentSlice";
 import CommentForm from "./CommentForm";
 import CommentItem from "./CommentItem";
 
-const CommentList = ({ id }) => {
+const CommentList = ({ postId }) => {
   const [commentList, setcommentList] = useState("");
   const dispatch = useDispatch();
 
   const comments = useSelector((store) => store.comment.comment);
 
   useEffect(() => {
-    dispatch(getComments(id));
+    dispatch(getComments(postId));
   }, []);
 
   useEffect(() => {
@@ -21,10 +21,12 @@ const CommentList = ({ id }) => {
 
   return (
     <CommentsConatiner>
-      <CommentForm />
+      <CommentForm id={postId} />
       {commentList &&
         Array.from(commentList).map((comment) => {
-          return <CommentItem comment={comment} key={comment.id} />;
+          return (
+            <CommentItem comment={comment} key={comment.id} postId={postId} />
+          );
         })}
     </CommentsConatiner>
   );

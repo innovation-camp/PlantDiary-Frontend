@@ -8,13 +8,11 @@ export const getPosts = createAsyncThunk("GET_POSTS", async () => {
 
 export const getPost = createAsyncThunk("GET_POST", async (id) => {
   const res = await instance.get(`/api/posts/${id}`);
-  console.log("res getPost > ", res.data);
   return res.data;
 });
 
 export const addPost = createAsyncThunk("ADD_POST", async (post) => {
   const res = await instance.post(`/api/posts`, post);
-  console.log("res ? ", post);
   return res.data;
 });
 
@@ -22,7 +20,6 @@ export const uploadThumbnail = createAsyncThunk(
   "UPLOAD_THUMBNAIL",
   async (thumbnail) => {
     const res = await imageClient.post(`/api/posts/upload`, thumbnail);
-    console.log("res uploadThumbnail ? ", res.data);
     return res.data;
   }
 );
@@ -55,6 +52,9 @@ const postSlice = createSlice({
     });
     builder.addCase(addPost.fulfilled, (state, action) => {
       state.posts.push(action.payload);
+    });
+    builder.addCase(deletePost.fulfilled, (state, action) => {
+      state.comment = state.posts.filter((post) => post.id !== action.meta.arg);
     });
   },
 });

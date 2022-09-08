@@ -10,7 +10,7 @@ const PostList = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(getPosts());
+    // dispatch(getPosts());
   }, [postList]);
 
   useEffect(() => {

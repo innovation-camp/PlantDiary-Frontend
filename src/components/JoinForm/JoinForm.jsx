@@ -34,7 +34,7 @@ const JoinForm = (props) => {
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  //TODO: 이메일, 닉네임 중복 확인 버튼 추가
+
   const handleSubmit = (event) => {
     event.preventDefault();
     const pwd_check = password_check();
@@ -51,12 +51,11 @@ const JoinForm = (props) => {
     }
     if (signup) {
       try {
-        dispatch(signUp({ email, nickname, password }));
+        dispatch(signUp({ email, nickname, password, passwordConfirm }));
         navigate("/login");
       } catch (error) {
         console.log(error);
       }
-      // TODO:
     } else {
       alert("회원가입 안돼!");
     }
@@ -124,9 +123,10 @@ const JoinForm = (props) => {
 
   const emailCheck = async () => {
     // 값 받아와서 true 면? available email 에 현재 email 넣기
-    const result = await dispatch(emailConfirm(email));
-    // if (result) {
-    if (result.payload) {
+    const result = await dispatch(emailConfirm(email)).then(
+      (res) => res.payload.success
+    );
+    if (result) {
       alert("사용 가능한 이메일입니다.");
       setAvailableEmail(email);
     } else {
@@ -135,10 +135,10 @@ const JoinForm = (props) => {
   };
 
   const nicknameCheck = async () => {
-    // 값 받아와서 true 면? available nickname 에 현재 nickname 넣기
-    const result = await dispatch(nicknameConfirm(nickname));
-    console.log(result);
-    if (result.payload) {
+    const result = await dispatch(nicknameConfirm(nickname)).then(
+      (res) => res.payload.success
+    );
+    if (result) {
       alert("사용 가능한 닉네임입니다.");
       setAvailableNickname(nickname);
     } else {
