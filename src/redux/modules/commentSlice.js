@@ -3,20 +3,35 @@ import { instance } from "../../network/request";
 
 export const getComments = createAsyncThunk("GET_COMMENTS", async (id) => {
   // const res = await instance.get(`/api/${id}/comments`);
-  const res = await instance.get(`/api/comments?postId=${id}`);
+  const res = await instance.get(`/api/comments?postId=${id}`, {
+    headers: {
+      Authorization: `${localStorage.getItem("Authorization")}`,
+      "Refresh-Token": `${localStorage.getItem("refreshToken")}`,
+    },
+  });
   return res.data;
 });
 
 export const postComment = createAsyncThunk(
   "POST_COMMENTS",
   async (idComment) => {
-    const res = await instance.post(`/api/comments`, idComment);
+    const res = await instance.post(`/api/comments`, idComment, {
+      headers: {
+        Authorization: `${localStorage.getItem("Authorization")}`,
+        "Refresh-Token": `${localStorage.getItem("refreshToken")}`,
+      },
+    });
     return res.data;
   }
 );
 
 export const deleteComment = createAsyncThunk("DELETE_COMMENTS", async (id) => {
-  const res = await instance.delete(`/api/comments/${id}`);
+  const res = await instance.delete(`/api/comments/${id}`, {
+    headers: {
+      Authorization: `${localStorage.getItem("Authorization")}`,
+      "Refresh-Token": `${localStorage.getItem("refreshToken")}`,
+    },
+  });
   return res.data;
 });
 
@@ -25,7 +40,13 @@ export const updateComment = createAsyncThunk(
   async (editInfo) => {
     const res = await instance.put(
       `/api/comments/${editInfo.id}`,
-      editInfo.requestData
+      editInfo.requestData,
+      {
+        headers: {
+          Authorization: `${localStorage.getItem("Authorization")}`,
+          "Refresh-Token": `${localStorage.getItem("refreshToken")}`,
+        },
+      }
     );
     return res.data;
   }

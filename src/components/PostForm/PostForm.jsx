@@ -30,6 +30,7 @@ const PostForm = () => {
     const file = { images: event.target.files[0] };
     const uploaded = await dispatch(uploadThumbnail(file)).then(
       (res) => res.payload.thumbnail
+      // (res) => console.log(res.payload)
     );
     setThumbnail(uploaded);
   };

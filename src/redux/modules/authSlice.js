@@ -1,20 +1,19 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { instance, guestInstance } from "../../network/request";
+import { instance } from "../../network/request";
 
 export const signUp = createAsyncThunk("SIGNUP", async (JoinInfo) => {
-  const res = await guestInstance.post(`/api/auth/register`, JoinInfo);
+  const res = await instance.post(`/api/auth/register`, JoinInfo);
   return res.data;
 });
 
 export const logIn = createAsyncThunk("LOGIN", async (loginInfo) => {
-  const res = await guestInstance.post(`/api/auth/login`, loginInfo);
+  const res = await instance.post(`/api/auth/login`, loginInfo);
   console.log("res logIn headers> ", res.headers);
 
   const accessToken = res.headers.authorization;
   const refreshToken = res.headers["refresh-token"];
 
   if (accessToken && refreshToken) {
-    // localStorage.setItem("Authorization", `Bearer ${accessToken}`);
     localStorage.setItem("Authorization", `${accessToken}`);
     localStorage.setItem("refreshToken", `${refreshToken}`);
   }
@@ -28,14 +27,25 @@ export const logOut = createAsyncThunk("LOGOUT", async () => {
 });
 
 export const mypage = createAsyncThunk("MYPAGE", async () => {
-  const res = await instance.get(`/api/auth/mypage`);
+  const res = await instance.get(`/api/auth/mypage`, {
+    headers: {
+      Authorization: `${localStorage.getItem("Authorization")}`,
+      "Refresh-Token": `${localStorage.getItem("refreshToken")}`,
+    },
+  });
   return res.data.success === true ? res.data.data : false;
 });
 
 export const changeUserInfo = createAsyncThunk(
   "CHANGE_USERINFO",
   async (userInfo) => {
-    const res = await instance.put(`/api/auth/mypage`, userInfo);
+    const res = await instance.put(`/api/auth/mypage`, userInfo, {
+      headers: {
+        Authorization: `${localStorage.getItem("Authorization")}`,
+        "Refresh-Token": `${localStorage.getItem("refreshToken")}`,
+      },
+    });
+
     console.log("mypage > ", res.data);
     return res.data;
   }
@@ -43,7 +53,7 @@ export const changeUserInfo = createAsyncThunk(
 
 export const emailConfirm = createAsyncThunk("CONFIRM_EMAIL", async (email) => {
   console.log("email :>> ", email);
-  const res = await guestInstance.post(`/api/auth/email`, { email });
+  const res = await instance.post(`/api/auth/email`, { email });
   console.log("res email > ", res.data);
   return res.data;
 });
@@ -51,7 +61,7 @@ export const emailConfirm = createAsyncThunk("CONFIRM_EMAIL", async (email) => {
 export const nicknameConfirm = createAsyncThunk(
   "CONFIRM_NiCKNAME",
   async (nickname) => {
-    const res = await guestInstance.post(`/api/auth/nickname`, { nickname });
+    const res = await instance.post(`/api/auth/nickname`, { nickname });
     console.log("res email > ", res.data);
     return res.data;
   }
@@ -69,6 +79,7 @@ const authSlice = createSlice({
     builder.addCase(logIn.fulfilled, (state, action) => {
       console.log("action.payload :>> ", action.payload);
       if (action.payload.success) {
+        localStorage.setItem("nickname", action.payload.data.nickname);
         state.user.isAuthenticated = action.payload.success;
         state.user.nickname = action.payload.data.nickname;
       } else {
@@ -76,6 +87,8 @@ const authSlice = createSlice({
       }
     });
     builder.addCase(logOut.fulfilled, (state, action) => {
+      localStorage.setItem("nickname", "");
+      window.location.reload();
       state.user.isAuthenticated = false;
       state.user.nickname = "";
     });

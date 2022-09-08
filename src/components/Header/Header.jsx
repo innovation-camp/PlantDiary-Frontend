@@ -12,21 +12,27 @@ import { useDispatch, useSelector } from "react-redux";
 import { logOut } from "../../redux/modules/authSlice";
 
 const Header = () => {
-  const user = useSelector((store) => store.auth.user);
-  const [username, setUsername] = useState();
+  // const user = useSelector((store) => store.auth.user);
+  const nickname = localStorage.getItem("nickname");
+  // const [username, setUsername] = useState();
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    if (user) {
-      const { isAuthenticated, nickname } = user;
-      if (isAuthenticated) {
-        setUsername(nickname);
-      } else {
-        setUsername("");
-      }
-    }
-  }, [user]);
+  // useEffect(() => {
+  //   if (user) {
+  //     const { isAuthenticated, nickname } = user;
+  //     if (isAuthenticated) {
+  //       setUsername(nickname);
+  //     } else {
+  //       setUsername("");
+  //     }
+  //   } else if (nickname !== "") {
+  //     setUsername(nickname);
+  //   }
+  // }, [user]);
+
+  console.log("local nickname ", nickname);
+  // console.log("username ", username);
 
   const login = () => {
     navigate("/login");
@@ -56,7 +62,7 @@ const Header = () => {
       <HeaderContainer>
         <HomeImg src={img_home} onClick={goHome} />
         <Title>Plant Diary</Title>
-        {!username ? (
+        {nickname === "" ? (
           <Button
             onClick={login}
             variant="contained"

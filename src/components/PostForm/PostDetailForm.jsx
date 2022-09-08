@@ -14,7 +14,10 @@ const PostDetailForm = () => {
   const dispatch = useDispatch();
   const [post, SetPost] = useState({});
   const [nickname, setNickname] = useState("");
-  const user = useSelector((store) => store.auth.user); // 로그인 한 사용자 정보 가져옴
+  // const user = useSelector((store) => store.auth.user); // 로그인 한 사용자 정보 가져옴
+
+  const loginNickname = localStorage.getItem("nickname");
+
   // TODO:
   useEffect(() => {
     // dispatch(getPost(params.id)).then((res) => SetPost(res.payload.data));
@@ -57,10 +60,10 @@ const PostDetailForm = () => {
     <DetailContainer>
       <Form>
         <FormHeader thumbnail={thumbnail ? thumbnail : defaultImg}>
-          <FormWriter>{nickname}</FormWriter>
+          <FormWriter>{loginNickname}</FormWriter>
           <FormTitle>{title}</FormTitle>
           <FormBtn>
-            {nickname && nickname === user.nickname ? (
+            {loginNickname && nickname === loginNickname ? (
               <>
                 <IconButton onClick={onUpdate}>
                   <CreateIcon color="success" />
