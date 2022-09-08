@@ -9,6 +9,7 @@ import loginImg from "../../imgs/login_img.png";
 import { useDispatch } from "react-redux";
 import { logIn } from "../../redux/modules/authSlice";
 import { useNavigate } from "react-router-dom";
+import { AltRoute } from "@mui/icons-material";
 
 const LoginForm = (props) => {
   const REGEX_EMAIL =
@@ -25,13 +26,19 @@ const LoginForm = (props) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     if (login) {
-      dispatch(logIn({ email, password }));
-      navigate("/");
-    } else {
-      alert("로그인 안돼!");
+      const result = await dispatch(logIn({ email, password })).then(
+        (res) => res.payload
+      );
+      if (result.success) {
+        console.log("로그인 성공!");
+        navigate("/");
+        return;
+      } else {
+        alert("로그인이 실패 했습니다.");
+      }
     }
   };
 

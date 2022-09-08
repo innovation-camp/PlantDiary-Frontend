@@ -10,6 +10,7 @@ import {
   nicknameConfirm,
   changeUserInfo,
 } from "../../redux/modules/authSlice";
+import { useNavigate } from "react-router-dom";
 
 const MypageForm = () => {
   const REGEX_NICKNAME = /[ㄱ-ㅎ|가-힣]+$/;
@@ -29,6 +30,7 @@ const MypageForm = () => {
 
   const [availableNickname, setAvailableNickname] = useState("");
 
+  const navigate = useNavigate();
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -43,7 +45,7 @@ const MypageForm = () => {
     }
   }, [user]);
 
-  const onSave = (event) => {
+  const onSave = async (event) => {
     event.preventDefault();
     const pwd_check = password_check();
     if (pwd_check !== true) {
@@ -54,10 +56,21 @@ const MypageForm = () => {
       return;
     }
     if (save) {
-      alert("회원정보 변경 가능!");
-      dispatch(
-        changeUserInfo({ email, nickname: newNickname, password: newPassword })
+      const result = await dispatch(
+        changeUserInfo({
+          nickname: newNickname,
+          newPassword: newPassword,
+          passwordConfirm: passwordConfirm,
+        })
       );
+      console.log("result ??? ", result);
+      if (result) {
+        alert("정보가 변경 되었습니다.");
+        navigate("/");
+        return;
+      } else {
+        alert("로그인이 실패 했습니다.");
+      }
     } else {
       alert("회원정보 변경 안됨!");
     }
@@ -112,11 +125,10 @@ const MypageForm = () => {
   }, [isNickname, isPassword]);
 
   const nicknameCheck = async () => {
-    // 값 받아와서 true 면? available nickname 에 현재 nickname 넣기
-    const result = await dispatch(nicknameConfirm(newNickname));
-    console.log(result);
-    if (result.payload) {
-      // if (true) {
+    const result = await dispatch(nicknameConfirm(newNickname)).then(
+      (res) => res.payload.success
+    );
+    if (result) {
       alert("사용 가능한 닉네임입니다.");
       setAvailableNickname(newNickname);
     } else {
