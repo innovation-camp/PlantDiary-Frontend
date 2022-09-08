@@ -126,6 +126,7 @@ const JoinForm = (props) => {
     const result = await dispatch(emailConfirm(email)).then(
       (res) => res.payload.success
     );
+    console.log("result email :>> ", result);
     if (result) {
       alert("사용 가능한 이메일입니다.");
       setAvailableEmail(email);

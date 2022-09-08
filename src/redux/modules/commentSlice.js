@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import instance from "../../network/request";
+import { instance } from "../../network/request";
 
 export const getComments = createAsyncThunk("GET_COMMENTS", async (id) => {
   // const res = await instance.get(`/api/${id}/comments`);
