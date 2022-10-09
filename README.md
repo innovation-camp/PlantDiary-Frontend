@@ -1,70 +1,156 @@
-# Getting Started with Create React App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+<div align="center">
 
-## Available Scripts
+# 🌱 Plant Diary 🌱
 
-In the project directory, you can run:
+## 👋 Intro 🤟
 
-### `yarn start`
+<b>Plant Diary</b>는 식물 일기를 공유하는 서비스입니다.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+자신이 가꾸는 식물의 사진과 이야기를 나눠보세요!
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## 🎨 [WireFrame](https://www.figma.com/file/v0hO2KISARZllANfzOHyL7/Plant-Diary?node-id=0%3A1) 🖌
 
-### `yarn test`
+<img width="661" alt="Screen Shot 2022-09-08 at 7 20 59 PM" src="https://user-images.githubusercontent.com/60090391/189098421-1d6fc6a7-eccc-4c9c-905d-c7e9c4c805ea.png">
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+---
 
-### `yarn build`
+## 👩🏻‍💻 Contributors 🧑🏻‍💻
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+| [윤수진](https://github.com/blingblin-g) | [홍성희](https://github.com/sungheeHong) | [문이슬](https://github.com/Leeseul-Moon) |
+|---------------------------------------|---------------------------------------| --- |
+| 게시글 / 댓글 CRUD                         | 회원가입 / 로그인 / 마이페이지                    | Client 전반 |
+| Back-end                              | Back-end                              | Front-end |
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## ⚙️ Tech Stack 🛠
+<img style="margin:5px; border: 2px solid white; border-radius: 20px" src="https://img.shields.io/badge/Java-green?style=flat-square&logo=java&logoColor=white"/>
+<img style="margin:5px; border: 2px solid white; border-radius: 20px" src="https://img.shields.io/badge/Spring-green?style=flat-square&logo=Spring&logoColor=white"/>
+<img style="margin:5px; border: 2px solid white; border-radius: 20px" src="https://img.shields.io/badge/React-blue?style=flat-square&logo=React&logoColor=white"/>
+<img style="margin:5px; border: 2px solid white; border-radius: 20px" src="https://img.shields.io/badge/Redux-purple?style=flat-square&logo=Redux&logoColor=white"/>
+<img style="margin:5px; border: 2px solid white; border-radius: 20px" src="https://img.shields.io/badge/AWS-232f3e?style=flat-square&logo=amazon&logoColor=white"/>
 
-### `yarn eject`
+---
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+<br /><br />
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## 🛼 How to run ⛸
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+</div>
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+### Back-End
 
-## Learn More
+#### clone repository
+```shell
+$ git clone https://github.com/innovation-camp/PlantDiary-Backend.git
+```
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+#### into the repository
+```shell
+$ cd PlantDiary-Backend
+```
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+#### build
+```shell
+$ ./build gradlew
+```
 
-### Code Splitting
+#### run server
+```shell
+$ java -jar build/libs/{실행파일}.jar
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+### Front-end
 
-### Analyzing the Bundle Size
+#### clone repository
+```shell
+$ git clone https://github.com/innovation-camp/PlantDiary-Frontend.git
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+#### into the repository
+```shell
+$ cd PlantDiary-Frontend
+```
 
-### Making a Progressive Web App
+#### install packages
+```shell
+$ yarn
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+#### start app
+```shell
+$ yarn start
+```
 
-### Advanced Configuration
+<div align="center">
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+## 📁 Directory Structure 📂
 
-### Deployment
+</div>
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+### Back-end
 
-### `yarn build` fails to minify
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+```shell
+📦 src
+ ┣ 📂 main
+ ┃ ┣ 📂 java
+ ┃ ┃ ┗ 📂 com
+ ┃ ┃ ┃ ┗ 📂 sparta
+ ┃ ┃ ┃ ┃ ┗ 📂 plantdiary
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂 command
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂 config
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂 configuration
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂 controller
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂 dto
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂 entity
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂 error
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂 jwt
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂 repository
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂 service
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂 shared
+ ┃ ┗ 📂 resources
+ ┃ ┃ ┣ 📂 static
+ ┃ ┃ ┣ 📂 templates
+ ┃ ┃ ┣ 📜 application.properties
+ ┃ ┃ ┗ 📜 aws.properties
+ ┗ 📂 test
+ ┃ ┣ 📂 java
+ ┃ ┃ ┗ 📂 com
+ ┃ ┃ ┃ ┗ 📂 sparta
+ ┃ ┃ ┃ ┃ ┗ 📂 plantdiary
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂 repository
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂 service
+ ┃ ┗ 📂 resources
+ ┃ ┃ ┗ 📜 application.properties
+```
+
+### Front-end
+
+```shell
+📦 src
+ ┣ 📂 components
+ ┃ ┣ 📂 CommentList
+ ┃ ┣ 📂 Header
+ ┃ ┣ 📂 ImageFileInput
+ ┃ ┣ 📂 JoinForm
+ ┃ ┣ 📂 LoginForm
+ ┃ ┣ 📂 MypageForm
+ ┃ ┣ 📂 PostForm
+ ┃ ┗ 📂 PostList
+ ┣ 📂 imgs
+ ┣ 📂 network
+ ┣ 📂 pages
+ ┣ 📂 redux
+ ┃ ┣ 📂 modules
+ ┣ 📂 service
+ ┣ 📂 util
+```
+
+<div align="center">
+
+## 💾 Database Schema 💿
+
+![image](https://user-images.githubusercontent.com/60090391/189101923-3ec4e5b3-26e2-4986-8ed0-75808ba22b71.png)
+
+</div>
